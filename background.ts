@@ -434,6 +434,38 @@ Electron.ipcMain.handle('service-fetch', (event, namespace) => {
   return k8smanager.listServices(namespace);
 });
 
+Electron.ipcMain.handle('epinio-install', async (event) => {
+  // TODO find out domain ip
+  // TODO self-signed?
+  process.stderr.write('installing epinio')
+  var child = childProcess.spawn(resources.executable('epinio-installer'),
+    ['install', '-m', 'manifest.yaml'],
+                     { detached: true, windowsHide: true });
+  child.stdout.on('data', function (data) {
+    process.stdout.write(data);
+  });
+  child.stderr.on('data', function (data) {
+    process.stdout.write(data);
+  });
+});
+
+Electron.ipcMain.handle('epinio-push', async (event, dir) => {
+  process.stdout.write('pushing app')
+  var child = childProcess.spawn(resources.executable('epinio'),
+    ['push', '-n', 'example', '-p', dir],
+    {detached: true, windowsHide: true});
+  child.stdout.on('data', function (data) {
+    process.stdout.write(data);
+  });
+  child.stderr.on('data', function (data) {
+    process.stdout.write(data);
+    });
+});
+
+Electron.ipcMain.handle('open-file-dialog', (event, options: Electron.OpenDialogOptions): Promise<Electron.OpenDialogReturnValue> => {
+  return Electron.dialog.showOpenDialog(options);
+});
+
 Electron.ipcMain.handle('service-forward', async(event, service, state) => {
   const forwarder = k8smanager?.portForwarder;
 

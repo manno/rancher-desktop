@@ -62,6 +62,9 @@ interface IpcMainEvents {
  * invoke on the main process, i.e. ipcRenderer.invoke() -> ipcMain.handle()
  */
 interface IpcMainInvokeEvents {
+  'epinio-push': (dir: string) => void;
+  'epinio-install': (dir: string) => void;
+  'open-file-dialog': (options: Electron.OpenDialogOptions) => Promise<Electron.OpenDialogReturnValue>;
   'settings-write': (arg: RecursivePartial<import('@/config/settings').Settings>) => void;
   'k8s-supports-port-forwarding': () => boolean;
   'service-fetch': (namespace?: string) => import('@/k8s-engine/k8s').ServiceEntry[];

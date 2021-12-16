@@ -57,6 +57,10 @@ export default {
         description: this.t('general.description'),
       }
     );
+    this.$store.dispatch(
+      'page/setAction',
+      { action: 'epinio-button-add' }
+    );
     ipcRenderer.on('settings-update', this.onSettingsUpdate);
     ipcRenderer.on('update-state', this.onUpdateState);
     ipcRenderer.send('update-state');
